@@ -20,7 +20,10 @@ coverage.xml
 
 # Environments
 .env
-.venv
+.env.*
+!.env.example
+!.env.exemple
+.venv/
 env/
 venv/
 ENV/
@@ -37,7 +40,7 @@ instance/
 *.sqlite3
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/
 
 # VS Code
 .vscode/
@@ -55,6 +58,10 @@ data/temp_*
 # Model files
 *.joblib
 *.pkl
+
+# Sensitive session files
+cookies.txt
+*.cookies
 
 # macOS
 .DS_Store
