@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="login-page">
+    <!-- Effet de particules flottantes -->
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <!-- Effet de grille géométrique -->
+    <div class="geometric-grid"></div>
+    
+    <div class="login-wrapper">
+        <div class="login-card-new">
+            <!-- Header avec gradient et effets -->
+            <div class="login-header-new">
+                <div class="header-glow"></div>
+                <div class="logo-container">
+                    <div class="logo-ring"></div>
+                    <i class="fas fa-chart-line"></i>
+                    <div class="logo-pulse"></div>
+                </div>
+                <h1 class="gradient-text">Bienvenue !</h1>
+                <p class="subtitle-text">Connectez-vous à votre compte</p>
+                <div class="header-decoration">
+                    <div class="decoration-line"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="decoration-line"></div>
+                </div>
+            </div>
+            
+            <!-- Formulaire de connexion avec effets -->
+            <div class="login-form-container">
+                <form method="POST" action="" class="login-form-new">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Champ nom d'utilisateur avec animation -->
+                    <div class="input-group-new" data-aos="fade-up" data-aos-delay="100">
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                            <div class="icon-glow"></div>
+                        </div>
+                        <div class="input-field">
+                            <label for="{{ form.username.id }}" class="floating-label">Nom d'utilisateur</label>
+                            {{ form.username(class="form-input", placeholder="Entrez votre nom d'utilisateur") }}
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Champ mot de passe avec animation -->
+                    <div class="input-group-new" data-aos="fade-up" data-aos-delay="200">
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <div class="icon-glow"></div>
+                        </div>
+                        <div class="input-field">
+                            <label for="{{ form.password.id }}" class="floating-label">Mot de passe</label>
+                            {{ form.password(class="form-input", placeholder="Entrez votre mot de passe") }}
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bouton de connexion avec effets avancés -->
+                    <button type="submit" class="login-btn" data-aos="fade-up" data-aos-delay="300">
+                        <div class="btn-content">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Se connecter</span>
+                        </div>
+                        <div class="btn-glow"></div>
+                        <div class="btn-particles">
+                            <div class="particle-btn"></div>
+                            <div class="particle-btn"></div>
+                            <div class="particle-btn"></div>
+                        </div>
+                    </button>
+                </form>
+                
+                <!-- Message de sécurité stylisé -->
+                <div class="security-message" data-aos="fade-up" data-aos-delay="400">
+                    <div class="security-icon">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="shield-glow"></div>
+                    </div>
+                    <span>Vos données sont sécurisées</span>
+                    <div class="security-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts pour les animations -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation des particules flottantes
+    const particles = document.querySelectorAll('.particle');
+    particles.forEach((particle, index) => {
+        particle.style.animationDelay = `${index * 0.5}s`;
+    });
+    
+    // Effet de focus sur les champs
+    const inputs = document.querySelectorAll('.form-input');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+    });
+    
+    // Animation du bouton au survol
+    const loginBtn = document.querySelector('.login-btn');
+    loginBtn.addEventListener('mouseenter', function() {
+        this.classList.add('btn-hover');
+    });
+    
+    loginBtn.addEventListener('mouseleave', function() {
+        this.classList.remove('btn-hover');
+    });
+});
+</script>
+{% endblock %}

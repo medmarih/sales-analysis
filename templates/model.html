@@ -1,0 +1,246 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-brain"></i> Configuration du Modele</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('model') }}">
+                        {{ form.hidden_tag() }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    {{ form.test_size.label(class="form-label") }}
+                                    {{ form.test_size(class="form-control") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Type de Modele</label>
+                                    <select class="form-control" disabled>
+                                        <option selected>Regression Lineaire</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Entrainer le Modele
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if metrics %}
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">MSE</h5>
+                    <h3 class="card-text">{{ "%.4f"|format(metrics.mse) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">RMSE</h5>
+                    <h3 class="card-text">{{ "%.4f"|format(metrics.rmse) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">R²</h5>
+                    <h3 class="card-text">{{ "%.4f"|format(metrics.r2) }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if pred_vs_actual_json %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-line"></i> Predictions vs Valeurs Reelles</h5>
+                </div>
+                <div class="card-body">
+                    <div id="pred-vs-actual-plot" style="height: 500px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if residuals_json %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar"></i> Analyse des Residus</h5>
+                </div>
+                <div class="card-body">
+                    <div id="residuals-plot" style="height: 500px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if regression_line_json %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-area"></i> Regression Lineaire - Donnees et Predictions</h5>
+                </div>
+                <div class="card-body">
+                    <div id="regression-line-plot" style="height: 500px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not metrics and not pred_vs_actual_json %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Aucun modele entraine</h5>
+                    <p>Entrainez un modele pour voir les metriques et graphiques.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Initialisation des graphiques...');
+    console.log('🔍 Vérification des données reçues...');
+    
+    // Debug: Afficher toutes les variables disponibles
+    console.log('📊 Variables disponibles dans le template:');
+    console.log('- pred_vs_actual_json:', {{ pred_vs_actual_json|tojson|safe if pred_vs_actual_json else 'null' }});
+    console.log('- residuals_json:', {{ residuals_json|tojson|safe if residuals_json else 'null' }});
+    console.log('- regression_line_json:', {{ regression_line_json|tojson|safe if regression_line_json else 'null' }});
+    console.log('- metrics:', {{ metrics|tojson|safe if metrics else 'null' }});
+    
+    // Fonction pour initialiser le graphique Prédictions vs Valeurs Réelles
+    function initPredVsActualPlot() {
+        console.log('🎯 Initialisation du graphique Prédictions vs Valeurs Réelles...');
+        const plotDiv = document.getElementById('pred-vs-actual-plot');
+        if (!plotDiv) {
+            console.log('❌ Div pred-vs-actual-plot non trouvé');
+            return;
+        }
+        console.log('✅ Div pred-vs-actual-plot trouvé');
+        
+        const jsonData = {{ pred_vs_actual_json|tojson|safe if pred_vs_actual_json else 'null' }};
+        if (!jsonData) {
+            console.log('❌ Données JSON pred_vs_actual non disponibles');
+            plotDiv.innerHTML = '<div class="alert alert-warning">Données non disponibles pour ce graphique</div>';
+            return;
+        }
+        
+        console.log('📊 Données pred_vs_actual reçues:', jsonData);
+        console.log('📏 Type de données:', typeof jsonData);
+        console.log('📏 Longueur des données:', jsonData.length || 'N/A');
+        
+        try {
+            Plotly.newPlot(plotDiv, jsonData.data, jsonData.layout);
+            console.log('✅ Graphique pred_vs_actual affiché avec succès');
+        } catch (error) {
+            console.error('❌ Erreur lors de l\'affichage du graphique pred_vs_actual:', error);
+            plotDiv.innerHTML = '<div class="alert alert-danger">Erreur lors de l\'affichage du graphique: ' + error.message + '</div>';
+        }
+    }
+    
+    // Fonction pour initialiser le graphique des Résidus
+    function initResidualsPlot() {
+        console.log('🎯 Initialisation du graphique des Résidus...');
+        const plotDiv = document.getElementById('residuals-plot');
+        if (!plotDiv) {
+            console.log('❌ Div residuals-plot non trouvé');
+            return;
+        }
+        console.log('✅ Div residuals-plot trouvé');
+        
+        const jsonData = {{ residuals_json|tojson|safe if residuals_json else 'null' }};
+        if (!jsonData) {
+            console.log('❌ Données JSON residuals non disponibles');
+            plotDiv.innerHTML = '<div class="alert alert-warning">Données non disponibles pour ce graphique</div>';
+            return;
+        }
+        
+        console.log('📊 Données residuals reçues:', jsonData);
+        console.log('📏 Type de données:', typeof jsonData);
+        console.log('📏 Longueur des données:', jsonData.length || 'N/A');
+        
+        try {
+            Plotly.newPlot(plotDiv, jsonData.data, jsonData.layout);
+            console.log('✅ Graphique residuals affiché avec succès');
+        } catch (error) {
+            console.error('❌ Erreur lors de l\'affichage du graphique residuals:', error);
+            plotDiv.innerHTML = '<div class="alert alert-danger">Erreur lors de l\'affichage du graphique: ' + error.message + '</div>';
+        }
+    }
+    
+    // Fonction pour initialiser le graphique de Régression Linéaire
+    function initRegressionPlot() {
+        console.log('🎯 Initialisation du graphique de Régression Linéaire...');
+        const plotDiv = document.getElementById('regression-line-plot');
+        if (!plotDiv) {
+            console.log('❌ Div regression-line-plot non trouvé');
+            return;
+        }
+        console.log('✅ Div regression-line-plot trouvé');
+        
+        const jsonData = {{ regression_line_json|tojson|safe if regression_line_json else 'null' }};
+        if (!jsonData) {
+            console.log('❌ Données JSON regression_line non disponibles');
+            plotDiv.innerHTML = '<div class="alert alert-warning">Données non disponibles pour ce graphique</div>';
+            return;
+        }
+        
+        console.log('📊 Données regression_line reçues:', jsonData);
+        console.log('📏 Type de données:', typeof jsonData);
+        console.log('📏 Longueur des données:', jsonData.length || 'N/A');
+        
+        try {
+            Plotly.newPlot(plotDiv, jsonData.data, jsonData.layout);
+            console.log('✅ Graphique regression_line affiché avec succès');
+        } catch (error) {
+            console.error('❌ Erreur lors de l\'affichage du graphique regression_line:', error);
+            plotDiv.innerHTML = '<div class="alert alert-danger">Erreur lors de l\'affichage du graphique: ' + error.message + '</div>';
+        }
+    }
+    
+    // Initialiser tous les graphiques
+    if (typeof Plotly !== 'undefined') {
+        console.log('✅ Plotly.js disponible, initialisation des graphiques...');
+        console.log('📏 Version de Plotly:', Plotly.version);
+        initPredVsActualPlot();
+        initResidualsPlot();
+        initRegressionPlot();
+    } else {
+        console.error('❌ Plotly.js non disponible');
+        // Afficher un message d'erreur sur tous les divs
+        document.querySelectorAll('[id$="-plot"]').forEach(div => {
+            div.innerHTML = '<div class="alert alert-danger">Plotly.js non disponible</div>';
+        });
+    }
+});
+</script>
+
+{% endblock %}

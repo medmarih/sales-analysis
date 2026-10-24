@@ -1,0 +1,429 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold mb-4 fade-in-up">
+                <span class="gradient-text">Prédiction Intelligente</span> des Ventes
+            </h1>
+            <p class="lead mb-4 fade-in-up" style="animation-delay: 0.2s;">
+                Optimisez votre gestion de stock grâce à nos modèles prédictifs avancés et visualisez l'avenir de vos ventes
+            </p>
+            <div class="hero-buttons fade-in-up" style="animation-delay: 0.4s;">
+                <a href="{{ url_for('data') }}" class="btn btn-cta me-3">
+                    <i class="fas fa-rocket me-2"></i> Commencer maintenant
+                </a>
+                <a href="{{ url_for('model') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-brain me-2"></i> Découvrir les modèles
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Grid -->
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card">
+            <div class="card-body text-center">
+                <div class="feature-icon-wrapper mb-4">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                </div>
+                <h5 class="card-title fw-bold">Données Sécurisées</h5>
+                <p class="card-text">Traitement 100% local, vos données restent confidentielles et sécurisées</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card">
+            <div class="card-body text-center">
+                <div class="feature-icon-wrapper mb-4">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                </div>
+                <h5 class="card-title fw-bold">Prédictions Précises</h5>
+                <p class="card-text">Modèles de machine learning optimisés pour des prévisions fiables</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card">
+            <div class="card-body text-center">
+                <div class="feature-icon-wrapper mb-4">
+                    <i class="fas fa-mobile-alt feature-icon"></i>
+                </div>
+                <h5 class="card-title fw-bold">Interface Moderne</h5>
+                <p class="card-text">Design responsive et intuitif pour une expérience utilisateur optimale</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Workflow Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0"><i class="fas fa-route me-2"></i> Comment ça marche ?</h2>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-4">
+                        <div class="workflow-step">
+                            <div class="workflow-number">1</div>
+                            <i class="fas fa-file-import fa-3x mb-3"></i>
+                            <h5 class="fw-bold">Importez vos données</h5>
+                            <p class="text-muted">Téléchargez vos historiques de ventes au format CSV</p>
+                        </div>
+                        <div class="workflow-arrow d-none d-md-block">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="workflow-step">
+                            <div class="workflow-number">2</div>
+                            <i class="fas fa-cogs fa-3x mb-3"></i>
+                            <h5 class="fw-bold">Choisissez votre modèle</h5>
+                            <p class="text-muted">Sélectionnez l'algorithme le plus adapté à vos données</p>
+                        </div>
+                        <div class="workflow-arrow d-none d-md-block">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="workflow-step">
+                            <div class="workflow-number">3</div>
+                            <i class="fas fa-chart-line fa-3x mb-3"></i>
+                            <h5 class="fw-bold">Visualisez les résultats</h5>
+                            <p class="text-muted">Analysez les prévisions avec des graphiques interactifs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Features -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0"><i class="fas fa-star me-2"></i> Fonctionnalités principales</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 feature-detail-card">
+                            <div class="card-body text-center">
+                                <div class="feature-icon-wrapper mb-4">
+                                    <i class="fas fa-table feature-icon"></i>
+                                </div>
+                                <h5 class="card-title fw-bold">Gestion des données</h5>
+                                <ul class="list-unstyled text-start">
+                                    <li><i class="fas fa-check text-success me-2"></i> Importation de fichiers CSV</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Génération de données d'exemple</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Visualisation des données</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Nettoyage automatique</li>
+                                </ul>
+                                <a href="{{ url_for('data') }}" class="btn btn-outline-primary mt-3">
+                                    <i class="fas fa-arrow-right me-2"></i> Gérer les données
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 feature-detail-card">
+                            <div class="card-body text-center">
+                                <div class="feature-icon-wrapper mb-4">
+                                    <i class="fas fa-brain feature-icon"></i>
+                                </div>
+                                <h5 class="card-title fw-bold">Modélisation avancée</h5>
+                                <ul class="list-unstyled text-start">
+                                    <li><i class="fas fa-check text-success me-2"></i> Entraînement de modèles</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Évaluation des performances</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Sauvegarde des modèles</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Comparaison d'algorithmes</li>
+                                </ul>
+                                <a href="{{ url_for('model') }}" class="btn btn-outline-primary mt-3">
+                                    <i class="fas fa-arrow-right me-2"></i> Entraîner un modèle
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 feature-detail-card">
+                            <div class="card-body text-center">
+                                <div class="feature-icon-wrapper mb-4">
+                                    <i class="fas fa-chart-line feature-icon"></i>
+                                </div>
+                                <h5 class="card-title fw-bold">Prédictions intelligentes</h5>
+                                <ul class="list-unstyled text-start">
+                                    <li><i class="fas fa-check text-success me-2"></i> Prévisions personnalisables</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Visualisation graphique</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Export des résultats</li>
+                                    <li><i class="fas fa-check text-success me-2"></i> Analyses détaillées</li>
+                                </ul>
+                                <a href="{{ url_for('predictions') }}" class="btn btn-outline-primary mt-3">
+                                    <i class="fas fa-arrow-right me-2"></i> Générer des prédictions
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Cards -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card info-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-file-csv me-2"></i> Format de fichier accepté</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">Fichier CSV avec les colonnes suivantes :</p>
+                <div class="code-block">
+                    <code>mois,ventes</code><br>
+                    <code>1,150</code><br>
+                    <code>2,200</code><br>
+                    <code>3,180</code>
+                </div>
+                <small class="text-muted mt-2 d-block">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Les colonnes 'annee' et 'mois_annee' seront générées automatiquement si elles sont manquantes.
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card info-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i> Cas d'utilisation</h5>
+            </div>
+            <div class="card-body">
+                <div class="use-case-list">
+                    <div class="use-case-item">
+                        <i class="fas fa-calendar-alt text-primary me-3"></i>
+                        <div>
+                            <strong>Prévision des commandes mensuelles</strong>
+                            <p class="text-muted mb-0">Anticipez vos besoins en stock</p>
+                        </div>
+                    </div>
+                    <div class="use-case-item">
+                        <i class="fas fa-temperature-high text-primary me-3"></i>
+                        <div>
+                            <strong>Détection des tendances saisonnières</strong>
+                            <p class="text-muted mb-0">Identifiez les patterns récurrents</p>
+                        </div>
+                    </div>
+                    <div class="use-case-item">
+                        <i class="fas fa-boxes text-primary me-3"></i>
+                        <div>
+                            <strong>Optimisation des niveaux de stock</strong>
+                            <p class="text-muted mb-0">Réduisez les coûts de stockage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <div class="cta-section">
+            <h3 class="mb-4">Prêt à optimiser vos ventes ?</h3>
+            <p class="lead mb-4">Rejoignez des centaines d'entreprises qui font confiance à nos prédictions</p>
+            <a href="{{ url_for('data') }}" class="btn btn-cta btn-lg">
+                <i class="fas fa-rocket me-2"></i> Commencer gratuitement
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Styles spécifiques pour la page d'accueil */
+.hero-section {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: var(--border-radius-xl);
+    margin-bottom: 3rem;
+}
+
+.gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.feature-card {
+    border: none;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-xl);
+}
+
+.feature-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background: var(--primary-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.feature-icon-wrapper .feature-icon {
+    color: white;
+    font-size: 2rem;
+}
+
+.feature-card:hover .feature-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.workflow-number {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background: var(--primary-gradient);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.feature-detail-card {
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.info-card {
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    height: 100%;
+}
+
+.code-block {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 1rem;
+    border-radius: var(--border-radius-sm);
+    border-left: 4px solid var(--primary-color);
+    font-family: 'Fira Code', monospace;
+}
+
+.use-case-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+}
+
+.use-case-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateX(5px);
+}
+
+.use-case-item:last-child {
+    margin-bottom: 0;
+}
+
+.cta-section {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 3rem;
+    border-radius: var(--border-radius-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+}
+
+.cta-section .btn-cta {
+    background: white;
+    color: var(--primary-color);
+    border: none;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-section .btn-cta:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Animations spécifiques */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0;
+    }
+    
+    .hero-buttons .btn {
+        display: block;
+        margin: 0.5rem 0;
+    }
+    
+    .workflow-arrow {
+        display: none;
+    }
+    
+    .cta-section {
+        padding: 2rem 1rem;
+    }
+}
+</style>
+{% endblock %}

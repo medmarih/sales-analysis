@@ -1,0 +1,8 @@
+{
+  "timestamp": "20250826_122655",
+  "backup_date": "2025-08-26T12:26:55.849850",
+  "files_backed_up": [
+    "data/sales_predictor_model.joblib",
+    "instance/users.db"
+  ]
+}

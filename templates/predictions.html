@@ -1,0 +1,257 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Header Section -->
+<div class="predictions-header mb-5">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold mb-3">
+                <i class="fas fa-chart-line me-3"></i>Prédictions des Ventes
+            </h1>
+            <p class="lead text-muted">Générez et visualisez les prévisions de vos ventes futures</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <div class="prediction-stats">
+                {% if table_data %}
+                <div class="stat-item">
+                    <span class="stat-number">{{ table_data|length }}</span>
+                    <span class="stat-label">Prédiction</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Configuration Section -->
+    <div class="col-md-4 mb-4">
+        <div class="card configuration-card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-cogs me-2"></i>Configuration des prédictions
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="" class="prediction-form">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-4">
+                        {{ form.target_month.label(class="form-label") }}
+                        {{ form.target_month(class="form-control") }}
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Choisissez le mois (1-12) pour lequel vous voulez une prédiction
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+                
+                {% if not forecast_graph_json %}
+                <div class="info-box mt-4">
+                    <div class="info-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h6>Conseil</h6>
+                    <p class="small text-muted">
+                        Choisissez le mois (1-12) pour lequel vous voulez une prédiction, puis cliquez sur "Prédire ce mois" pour voir le résultat.
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="col-md-8 mb-4">
+        <div class="card visualization-card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-area me-2"></i>Graphique des prédictions
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if forecast_graph_json %}
+                    <div class="chart-container">
+                        <div id="forecast-plot" class="plotly-chart"></div>
+                    </div>
+                    <div class="chart-actions mt-4">
+                        <button class="btn btn-outline-primary" onclick="toggleFullscreen()">
+                            <i class="fas fa-expand me-2"></i>Plein écran
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="downloadChart()">
+                            <i class="fas fa-download me-2"></i>Télécharger
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5>Aucune prédiction générée</h5>
+                        <p class="text-muted">
+                            Configurez vos paramètres et générez vos premières prédictions pour voir le graphique ici.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if table_data and table_columns %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card data-table">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-table me-2"></i>Prédiction du mois
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                {% for column in table_columns %}
+                                <th>
+                                    <i class="fas fa-columns me-2"></i>{{ column.name }}
+                                </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in table_data %}
+                            <tr>
+                                {% for column in table_columns %}
+                                <td>
+                                    {% if row[column.id] is number %}
+                                        <span class="prediction-value">{{ row[column.id]|round(2) }}</span>
+                                    {% else %}
+                                        {{ row[column.id] }}
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-actions mt-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="summary-stats">
+                                <span class="stat-badge">
+                                    <i class="fas fa-chart-bar me-1"></i>
+                                    {{ table_data|length }} prédiction
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <button class="btn btn-outline-primary btn-sm" onclick="exportTable()">
+                                <i class="fas fa-file-export me-2"></i>Exporter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if forecast_graph_json %}
+<script>
+    if (window.Plotly) {
+        // Graphique Plotly avec configuration améliorée
+        const forecastData = JSON.parse('{{forecast_graph_json|safe}}');
+        
+        // Configuration du graphique
+        const config = {
+            responsive: true,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+            displaylogo: false
+        };
+        
+        // Améliorer le layout
+        const layout = {
+            ...forecastData.layout,
+            font: { 
+                size: 12,
+                family: 'Inter, sans-serif'
+            },
+            margin: { l: 60, r: 30, t: 50, b: 60 },
+            hovermode: 'closest',
+            showlegend: true,
+            legend: {
+                x: 0.02,
+                y: 0.98,
+                bgcolor: 'rgba(255, 255, 255, 0.8)',
+                bordercolor: '#e2e8f0',
+                borderwidth: 1
+            },
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            xaxis: {
+                gridcolor: '#e2e8f0',
+                zeroline: false
+            },
+            yaxis: {
+                gridcolor: '#e2e8f0',
+                zeroline: false
+            }
+        };
+        
+        // Créer le graphique
+        Plotly.newPlot('forecast-plot', forecastData.data, layout, config);
+        
+        // Gestionnaire de redimensionnement
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize('forecast-plot');
+        });
+        
+        console.log('✅ Graphique des prédictions chargé avec succès');
+    } else {
+        console.error('❌ Plotly.js non disponible');
+        document.getElementById('forecast-plot').innerHTML = 
+            '<div class="alert alert-warning">Erreur: Plotly.js non chargé</div>';
+    }
+</script>
+{% endif %}
+
+<script>
+// Fonction pour basculer en plein écran
+function toggleFullscreen() {
+    const chart = document.getElementById('forecast-plot');
+    if (chart.requestFullscreen) {
+        chart.requestFullscreen();
+    } else if (chart.webkitRequestFullscreen) {
+        chart.webkitRequestFullscreen();
+    } else if (chart.msRequestFullscreen) {
+        chart.msRequestFullscreen();
+    }
+}
+
+// Fonction pour télécharger le graphique
+function downloadChart() {
+    if (window.Plotly) {
+        Plotly.downloadImage('forecast-plot', {
+            format: 'png',
+            filename: 'predictions_ventes',
+            width: 1200,
+            height: 800
+        });
+    }
+}
+
+// Fonction pour exporter le tableau
+function exportTable() {
+    // Logique d'export à implémenter
+    alert('Fonctionnalité d\'export en cours de développement');
+}
+</script>
+{% endblock %}

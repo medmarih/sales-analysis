@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#007bff" />
+      <stop offset="100%" stop-color="#0056b3" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="20" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2" />
+  <g transform="translate(30, 30)">
+    <!-- Graphique de prédiction -->
+    <polyline points="0,100 20,80 40,85 60,60 80,50 100,30 120,20 140,10" fill="none" stroke="url(#gradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Points de données -->
+    <circle cx="0" cy="100" r="5" fill="#007bff" />
+    <circle cx="20" cy="80" r="5" fill="#007bff" />
+    <circle cx="40" cy="85" r="5" fill="#007bff" />
+    <circle cx="60" cy="60" r="5" fill="#007bff" />
+    <circle cx="80" cy="50" r="5" fill="#007bff" />
+    <circle cx="100" cy="30" r="5" fill="#007bff" />
+    <circle cx="120" cy="20" r="5" fill="#007bff" />
+    <circle cx="140" cy="10" r="5" fill="#007bff" />
+    <!-- Ligne de prédiction -->
+    <polyline points="140,10 160,5" fill="none" stroke="#dc3545" stroke-width="4" stroke-dasharray="5,5" stroke-linecap="round" />
+    <circle cx="160" cy="5" r="5" fill="#dc3545" />
+  </g>
+  <text x="100" y="170" font-family="'Roboto', sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#343a40">Prédiction des Ventes</text>
+</svg>
